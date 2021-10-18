@@ -1,0 +1,16 @@
+.site-layout-content {
+  min-height: 500px;
+  padding: 24px;
+  background: #fff;
+}
+
+.site-card-border-less-wrapper {
+  padding-top: 250px;
+  padding-bottom: 250px;
+  background: #ececec;
+}
+
+.site-card-wrapper {
+  padding-top: 50px;
+  background: #ececec;
+}
