@@ -23,8 +23,8 @@ collection = db[mongo_collection_name]
 database_return = collection.find()
 f = open("etl_data.txt", "w")
 for i in database_return:
-    url = i['Product Url']
-    string = url +"\n"
+    name = i['product_name']
+    string = name +"\n"
     f.write(string)    
 
 f.close()
