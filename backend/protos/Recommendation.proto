@@ -1,11 +1,11 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "io.grpc.randomitem";
-option java_outer_classname = "RandomItemProto";
-option objc_class_prefix = "RND";
+option java_package = "io.grpc.recommendation";
+option java_outer_classname = "Recommendation";
+option objc_class_prefix = "RMD";
 
-package randomitem;
+package recommendation;
 
 service Genrator {
     rpc SendItems () returns (ResponseItems) {}
