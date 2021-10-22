@@ -22,5 +22,4 @@ message ResponseItems{
     string description = 8;
     int32 product_rating = 9;
     int32 overall_rating = 10;
-    string brand = 11;
 }

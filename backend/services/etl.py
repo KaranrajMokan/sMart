@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Fri Oct 22 10:08:51 2021
+Created on Sat Sep 25 19:20:53 2021
 
 @author: karanrajmokan
 """
@@ -20,14 +20,13 @@ db_client = pymongo.MongoClient(pymongo_client)
 db = db_client[mongo_database_name]
 collection = db[mongo_collection_name]
 
-db_results = collection.find().limit(100)
+database_return = collection.find()
+f = open("etl_data.txt", "w")
+for i in database_return:
+    name = i['product_name']
+    string = name +"\n"
+    f.write(string)    
 
-categories = ['Clothing','Watches','Jewellery']
-recommendations=[]
-for i in db_results:
-    cat = i['product_category_tree'].split(" , ")
-    if any(i in cat for i in categories):
-        recommendations.append(i)
-        
-        
-print("The number of recommended products is",len(recommendations))
+f.close()
+db_client.close()
+
