@@ -3,13 +3,14 @@ from concurrent import futures
 import time
 
 # import the generated classes
-import Recommendation_pb2
-import Recommendation_pb2_grpc
+import recommendation_pb2
+import recommendation_pb2_grpc
 
 
 import pymongo
 import os
 from dotenv import load_dotenv
+import json
 load_dotenv('../.env')
 
 pymongo_client=os.environ.get("PYMONGO_CLIENT")
@@ -23,32 +24,32 @@ collection = db[mongo_collection_name]
 
 db_results = collection.find().limit(100)
 
-class GenratorServicer(Recommendation_pb2_grpc.GenratorServicer):
-    def SendItems(self,request, context):
-        response = Recommendation_pb2.ResponseItems()
+class GenratorServicer(recommendation_pb2_grpc.GenratorServicer):
+    def SendItems(self, request, context):
+        
         categories = ['Clothing','Watches','Jewellery']
         recommendations=[]
         for i in db_results:
             cat = i['product_category_tree'].split(" , ")
             if any(i in cat for i in categories):
+                del i['product_url']
+                del i['_id']
+                if 'brand' in i.keys():
+                    del i['brand']
                 recommendations.append(i)
-
-        response.value = recommendations
+        print(recommendations[0])
         db_client.close()
-        return response
+        return recommendation_pb2.ResponseItems(**recommendations[0])
 
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
-Recommendation_pb2_grpc.add_GenratorServicer_to_server(
-        GenratorServicer(), server)
+recommendation_pb2_grpc.add_GenratorServicer_to_server(
+GenratorServicer(), server)
 
 # listen on port 50051
 print('Starting server. Listening on port 50051.')
 server.add_insecure_port('[::]:50051')
 server.start()
+server.wait_for_termination()
 
-try:
-    while True:
-        time.sleep(86400)
-except KeyboardInterrupt:
-    server.stop(0)
+

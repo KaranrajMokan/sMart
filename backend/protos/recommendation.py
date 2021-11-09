@@ -9,6 +9,7 @@ Created on Fri Oct 22 10:08:51 2021
 import pymongo
 import os
 from dotenv import load_dotenv
+import json
 load_dotenv('../.env')
 
 pymongo_client=os.environ.get("PYMONGO_CLIENT")
@@ -27,10 +28,14 @@ recommendations=[]
 for i in db_results:
     cat = i['product_category_tree'].split(" , ")
     if any(i in cat for i in categories):
+        del i['product_url']
+        del i['_id']
+        if 'brand' in i.keys():
+            del i['brand']
         recommendations.append(i)
         
         
-print("The number of recommended products is",len(recommendations))
+print("The number of recommended products is",recommendations[0][0])
 
 db_client.close()
 

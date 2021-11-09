@@ -8,9 +8,11 @@ option objc_class_prefix = "RND";
 package randomitem;
 
 service Genrator {
-    rpc SendItems () returns (ResponseItems) {}
+    rpc SendItems (Number) returns (ResponseItems) {}
 }
-
+message Number {
+    float value = 1;
+}
 message ResponseItems{
     string uniq_id = 1;
     string product_name = 2;
@@ -22,4 +24,5 @@ message ResponseItems{
     string description = 8;
     double product_rating = 9;
     double overall_rating = 10;
+    float value = 11;
 }

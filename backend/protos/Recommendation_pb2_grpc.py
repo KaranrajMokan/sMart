@@ -2,8 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import Recommendation_pb2 as Recommendation__pb2
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
+import recommendation_pb2 as recommendation__pb2
 
 
 class GenratorStub(object):
@@ -17,8 +16,8 @@ class GenratorStub(object):
         """
         self.SendItems = channel.unary_unary(
                 '/recommendation.Genrator/SendItems',
-                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-                response_deserializer=Recommendation__pb2.ResponseItems.FromString,
+                request_serializer=recommendation__pb2.Number.SerializeToString,
+                response_deserializer=recommendation__pb2.ResponseItems.FromString,
                 )
 
 
@@ -36,8 +35,8 @@ def add_GenratorServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'SendItems': grpc.unary_unary_rpc_method_handler(
                     servicer.SendItems,
-                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-                    response_serializer=Recommendation__pb2.ResponseItems.SerializeToString,
+                    request_deserializer=recommendation__pb2.Number.FromString,
+                    response_serializer=recommendation__pb2.ResponseItems.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -61,7 +60,7 @@ class Genrator(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/recommendation.Genrator/SendItems',
-            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-            Recommendation__pb2.ResponseItems.FromString,
+            recommendation__pb2.Number.SerializeToString,
+            recommendation__pb2.ResponseItems.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
