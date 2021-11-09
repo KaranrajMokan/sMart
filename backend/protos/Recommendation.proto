@@ -4,11 +4,12 @@ option java_multiple_files = true;
 option java_package = "io.grpc.recommendation";
 option java_outer_classname = "Recommendation";
 option objc_class_prefix = "RMD";
+import "google/protobuf/empty.proto";
 
 package recommendation;
 
 service Genrator {
-    rpc SendItems () returns (ResponseItems) {}
+    rpc SendItems (google.protobuf.Empty) returns (ResponseItems) {}
 }
 
 message ResponseItems{
