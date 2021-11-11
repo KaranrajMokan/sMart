@@ -12,13 +12,13 @@ class App extends Component {
     super(props);
     this.state = {
       date: new Date(),
-      menu: "home",
+      menu: "login",
       username: "",
       password: "",
       isLoggedIn: false,
     };
     this.handleMenuClick = this.handleMenuClick.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
     this.handleLoginData = this.handleLoginData.bind(this);
   }
 
@@ -26,8 +26,8 @@ class App extends Component {
     this.setState({ menu: e.key });
   }
 
-  handleLogin(e) {
-    this.setState({ menu: "login" });
+  handleLogout(e) {
+    this.setState({ menu: "login", isLoggedIn: false });
   }
 
   handleLoginData(data) {
@@ -58,34 +58,44 @@ class App extends Component {
                 alt="Logo"
               />
             </Col>
-            <Col span={15}>
-              <Menu
-                onClick={this.handleMenuClick}
-                style={{
-                  paddingLeft: "25px",
-                  alignItems: "center",
-                  textAlign: "center",
-                  fontSize: "20px",
-                  background: "#d2e4f6",
-                  border: "none",
-                }}
-                mode="horizontal"
-                defaultSelectedKeys={["home"]}
-              >
-                <Menu.Item key="home">Home</Menu.Item>
-                <Menu.Item key="cart">Cart</Menu.Item>
-                <Menu.Item key="trans">Transaction</Menu.Item>
-              </Menu>
-            </Col>
-            <Col span={3} style={{ paddingRight: "10x", fontSize: "25px" }}>
-              <Button
-                type="primary"
-                ghost
-                disabled={this.state.isLoggedIn}
-                onClick={this.handleLogin}
-              >
-                Login
-              </Button>
+            <Col span={18}>
+              {this.state.isLoggedIn === true ? (
+                <Row>
+                  <Col span={21}>
+                    <Menu
+                      onClick={this.handleMenuClick}
+                      style={{
+                        paddingLeft: "25px",
+                        alignItems: "center",
+                        textAlign: "center",
+                        fontSize: "20px",
+                        background: "#d2e4f6",
+                        border: "none",
+                      }}
+                      mode="horizontal"
+                      defaultSelectedKeys={["home"]}
+                    >
+                      <Menu.Item key="home">Home</Menu.Item>
+                      <Menu.Item key="cart">Cart</Menu.Item>
+                      <Menu.Item key="trans">Transaction</Menu.Item>
+                    </Menu>
+                  </Col>
+                  <Col
+                    span={3}
+                    style={{
+                      float: "right",
+                      paddingLeft: "100x",
+                      fontSize: "25px",
+                    }}
+                  >
+                    <Button type="primary" onClick={this.handleLogout}>
+                      Logout
+                    </Button>
+                  </Col>{" "}
+                </Row>
+              ) : (
+                <div></div>
+              )}
             </Col>
           </Row>
           <Content style={{ padding: "40px 50px 0px" }}>
