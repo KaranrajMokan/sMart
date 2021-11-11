@@ -9,6 +9,7 @@ Created on Fri Oct 22 10:08:51 2021
 import pymongo
 import os
 from dotenv import load_dotenv
+import json
 load_dotenv('../.env')
 
 pymongo_client=os.environ.get("PYMONGO_CLIENT")
@@ -37,6 +38,6 @@ for i in db_results:
 print("The number of recommended products is",len(recommendations))
 print(recommendations[0])
 print("\n")
-print(recommendations[1])
+
 db_client.close()
 
