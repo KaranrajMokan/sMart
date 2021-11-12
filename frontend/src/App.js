@@ -37,6 +37,8 @@ class App extends Component {
       isLoggedIn: data.authentication,
       menu: "home",
     });
+    localStorage.setItem("username", data.username);
+    localStorage.setItem("password", data.password);
   }
 
   render() {
