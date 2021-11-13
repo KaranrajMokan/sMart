@@ -6,26 +6,25 @@ Created on Fri Oct 22 11:31:28 2021
 @author: karanrajmokan
 """
 
-import pymongo
-import os
-from dotenv import load_dotenv
-from bson.json_util import dumps, loads
-load_dotenv('../.env')
+import tornado.ioloop
+import tornado.web
 
-pymongo_client=os.environ.get("PYMONGO_CLIENT")
+'''use self.get_arguements'''
+class Cart(tornado.web.RequestHandler):
+    def get(self):
+        self.write("...items in cart")
+    def post(self):
+        self.write("...post")
 
-db_client = pymongo.MongoClient(pymongo_client)
-db = db_client['smartDB']
-cart = db['cart']
-transaction = db['transaction']
-
-database_return = cart.find({"username":"karan"})
-#cart.delete_one({"username":"karan"})
-
-database_return = loads(dumps(database_return))[0]
-database_return['transaction_id'] = database_return['_id']
-del database_return['_id']
-ids = transaction.insert_one(database_return)
+def make_app():
+    return tornado.web.Application([
+        (r"/app/cart", Cart)])
 
 
-db_client.close()
+if __name__ == "__main__":
+    app = make_app()
+    port = 8083
+    app.listen(port)
+    print("Bitches! App listening on port: ",port)
+    tornado.ioloop.IOLoop.current().start()
+
