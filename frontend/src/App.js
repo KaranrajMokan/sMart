@@ -28,6 +28,7 @@ class App extends Component {
 
   handleLogout(e) {
     this.setState({ menu: "login", isLoggedIn: false });
+    localStorage.clear();
   }
 
   handleLoginData(data) {
