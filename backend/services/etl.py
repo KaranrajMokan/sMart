@@ -13,8 +13,19 @@ db = db_client[mongo_database_name]
 collection = db[mongo_collection_name]
 
 database_return = collection.find()
+categoriesList=[]
 for i in database_return:
-    print(i)    
+    categories = i['product_category_tree'].split(" , ")
+    for j in categories:
+        if j not in categoriesList:
+            categoriesList.append(j)
+
+'''
+f=open("categories.txt","w")
+for i in categoriesList:
+    f.write(i+"\n")
+f.close()
+'''
 
 db_client.close()
 

@@ -45,7 +45,6 @@ class Login extends Component {
             password: this.state.password,
             authentication: response.data["Authentication"],
           };
-          console.log(data["authentication"]);
           this.props.loginData(data);
         })
         .catch((error) => {

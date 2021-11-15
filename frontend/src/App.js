@@ -106,7 +106,7 @@ class App extends Component {
               )}
             </Col>
           </Row>
-          <Content style={{ padding: "40px 50px 0px" }}>
+          <Content style={{ padding: "40px 50px" }}>
             <div className="site-layout-content">
               {this.state.menu === "home" ? (
                 <Home />
