@@ -32,7 +32,7 @@ class Cart(tornado.web.RequestHandler):
         productsList = json['productsList']
         price=0
         for i in productsList:
-            price += i['discount_price']
+            price += (i['discount_price']*i['quantity'])
         db_results = self.cart.find({"username":username})
         if len(list(db_results)) == 0:
             dictionary = {

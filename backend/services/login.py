@@ -27,6 +27,7 @@ class Login(tornado.web.RequestHandler):
         for i in db_results:
             if i['username'] == username and i['password'] == password:
                 Dict["Authentication"] = True
+                print("User",username,"has successfully logged in")
         self.write(Dict)
                
     def post(self):

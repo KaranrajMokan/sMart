@@ -26,6 +26,7 @@ class Transaction(tornado.web.RequestHandler):
         username = self.get_argument('username')
         db_results = self.transaction.find({"username":username})
         transactions = list(db_results)
+        print("The number of fetched transactions for",username,"is",len(transactions))
         self.write({"transactionsList" : json.loads(json_util.dumps(transactions))})
         
     def post(self):
