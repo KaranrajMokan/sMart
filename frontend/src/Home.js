@@ -1,16 +1,49 @@
 import { Component } from "react";
 import { Row, Col, Select, Card } from "antd";
+import axios from "axios";
 
 const { Meta } = Card;
 const { Option } = Select;
+let items = []
 class Home extends Component {
   constructor(props) {
     super(props);
+    this.state ={
+      data :[]
+    }
     this.handleCategoryChange = this.handleCategoryChange.bind(this);
   }
 
   handleCategoryChange(value) {
     console.log(value);
+  }
+  componentDidMount()
+  {
+      axios.request({
+                    method: 'get',
+                    url: 'http://localhost:8081/app/random'
+                    }).then((response)=>{
+                              //console.log(response.data)
+                              
+                              for(let i=0;i<response.data['productsList'].length;i++)
+                              {
+                                let tempsrc = response.data['productsList'][i]['image'].split(",")
+                                let temp = {
+                                  alt: 'example',
+                                  src: tempsrc[0],
+                                  title: response.data['productsList'][i]['product_name'],
+                                  description: response.data['productsList'][i]['description']
+                                  
+                                }
+                                items.push(temp)
+                                console.log(items)
+                              }
+                              this.setState({
+                                data: items
+                              })
+                           }).catch((error) => {
+                              console.log(error.response);
+                          });
   }
 
   categories = [
@@ -21,57 +54,6 @@ class Home extends Component {
     "Vegetables",
     "Meat",
     "Grocery",
-  ];
-
-  data = [
-    {
-      alt: "example",
-      src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      title: "Europe Street beat",
-      description: "www.instagram.com",
-    },
-    {
-      alt: "example",
-      src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      title: "Europe Street beat",
-      description: "www.instagram.com",
-    },
-    {
-      alt: "example",
-      src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      title: "Europe Street beat",
-      description: "www.instagram.com",
-    },
-    {
-      alt: "example",
-      src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      title: "Europe Street beat",
-      description: "www.instagram.com",
-    },
-    {
-      alt: "example",
-      src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      title: "Europe Street beat",
-      description: "www.instagram.com",
-    },
-    {
-      alt: "example",
-      src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      title: "Europe Street beat",
-      description: "www.instagram.com",
-    },
-    {
-      alt: "example",
-      src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      title: "Europe Street beat",
-      description: "www.instagram.com",
-    },
-    {
-      alt: "example",
-      src: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      title: "Europe Street beat",
-      description: "www.instagram.com",
-    },
   ];
 
   render() {
@@ -103,7 +85,7 @@ class Home extends Component {
           style={{ paddingLeft: "100px", paddingTop: "70px" }}
           gutter={[24, 24]}
         >
-          {this.data.map((item) => (
+          {this.state.data.map((item) => (
             <Col span={8}>
               <Card
                 hoverable
