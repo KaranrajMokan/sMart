@@ -10,6 +10,11 @@ load_dotenv('../.env')
 
 class Transaction(tornado.web.RequestHandler):
     
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+    
     def initialize(self):
         pymongo_client=os.environ.get("PYMONGO_CLIENT")
         db_client = pymongo.MongoClient(pymongo_client)

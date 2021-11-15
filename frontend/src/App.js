@@ -1,5 +1,6 @@
 import "./App.css";
 import { Layout, Menu, Row, Col, Button } from "antd";
+import message from "antd/es/message";
 import { Component } from "react";
 import Home from "./Home";
 import Login from "./Login";
@@ -36,8 +37,12 @@ class App extends Component {
       username: data.username,
       password: data.password,
       isLoggedIn: data.authentication,
-      menu: "home",
     });
+    if (this.state.isLoggedIn === true) {
+      this.setState({ menu: "home" });
+    } else {
+      message.error("Username/Password is incorrect");
+    }
     localStorage.setItem("username", data.username);
     localStorage.setItem("password", data.password);
   }

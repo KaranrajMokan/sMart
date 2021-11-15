@@ -1,4 +1,5 @@
 import { Component } from "react";
+import axios from "axios";
 import { Input, Button } from "antd";
 import {
   UserOutlined,
@@ -29,12 +30,27 @@ class Login extends Component {
 
   handleSubmit(e) {
     if (this.state.username !== "" && this.state.password !== "") {
-      const data = {
-        username: this.state.username,
-        password: this.state.password,
-        authentication: true,
-      };
-      this.props.loginData(data);
+      axios
+        .request({
+          method: "get",
+          url: "http://localhost:8080/app/login",
+          params: {
+            username: this.state.username,
+            password: this.state.password,
+          },
+        })
+        .then((response) => {
+          const data = {
+            username: this.state.username,
+            password: this.state.password,
+            authentication: response.data["Authentication"],
+          };
+          console.log(data["authentication"]);
+          this.props.loginData(data);
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
     } else {
       message.error("Please enter Login creds");
     }
