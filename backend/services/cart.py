@@ -13,8 +13,8 @@ class Cart(tornado.web.RequestHandler):
     def set_default_headers(self):
         self.set_header("Access-Control-Allow-Origin", "*")
         self.set_header("Access-Control-Allow-Headers", "x-requested-with")
-        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')    
-
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+    
     def initialize(self):
         pymongo_client=os.environ.get("PYMONGO_CLIENT")
         db_client = pymongo.MongoClient(pymongo_client)
@@ -27,23 +27,31 @@ class Cart(tornado.web.RequestHandler):
         self.finish({"cartList" : json.loads(json_util.dumps(db_results))})
         
     def post(self):
-        json = tornado.escape.json_decode(self.request.body)
-        username = json['username']
-        productsList = json['productsList']
+        username = self.get_argument('username')
+        products = self.get_argument('products')
+        products = json.loads(products)
         price=0
-        for i in productsList:
-            price += (i['discount_price']*i['quantity'])
+        price += int(products['discount_price'])*int(products['quantity'])
         db_results = self.cart.find({"username":username})
-        if len(list(db_results)) == 0:
+        length = len(list(db_results))
+        if length == 0:
+            productsList = [products]
             dictionary = {
                 "username":username,
                 "products_list":productsList,
                 "final_price":price}
             self.cart.insert_one(dictionary)
-        else:
+        elif length != 0:
+            productsList=[]
+            db_results = self.cart.find({"username":username})
+            for i in db_results:
+                productsList=i['products_list']
+            for i in productsList:
+                price += int(i['discount_price'])*int(i['quantity'])
+            productsList.append(products)
             self.cart.update_many({"username":username},{
                 "$set" : { "products_list" : productsList, "final_price" : price }})
-        self.write("Post successful")
+        self.write({"Updation":True})
 
 def make_app():
     return tornado.web.Application([
