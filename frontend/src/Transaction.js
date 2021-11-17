@@ -15,7 +15,7 @@ class Transaction extends Component {
     axios
       .request({
         method: "get",
-        url: "http://localhost:8082/app/transaction",
+        url: "http://localhost:8084/app/transaction",
         params: {
           username: username,
         },
