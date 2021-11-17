@@ -46,12 +46,14 @@ class Transaction extends Component {
                     {item["products_list"].map((products) => (
                       <div>
                         <p>{"Product Name:  " + products.product_name}</p>
-                        <p>{"Product Price:  " + products.discount_price}</p>
+                        <p>Product Price: &#8377;{products.discount_price}</p>
                         <p>{"Quantity:  " + products.quantity}</p>
                         <Divider plain></Divider>
                       </div>
                     ))}
-                    Final Price: {item.final_price}
+                    <p>Final Price: &#8377;{item.final_price}</p>
+                    <p>Payment Date: {item.date} </p>
+                    <p>Payment Mode: {item.payment_mode}</p>
                   </Card>
                 </Col>
               ))

@@ -31,12 +31,16 @@ class Transaction(tornado.web.RequestHandler):
         
     def post(self):
         username = self.get_argument('username')
+        date = self.get_argument('date')
         db_results = self.cart.find_one({"username":username})
         self.cart.delete_one({"username":username})
         results = dict(db_results)
         results['transaction_id'] = results.pop('_id')
+        results['date'] = date
+        results['payment_mode'] = "Bitcoin(BTC)"
         self.transaction.insert_one(results)
-        self.write("Updated Transactions")
+        print("Updated Transactions")
+        self.write({"Updation" : True})
 
 def make_app():
     return tornado.web.Application([

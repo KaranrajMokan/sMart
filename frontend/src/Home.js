@@ -86,7 +86,7 @@ class Home extends Component {
       })
       .then((response) => {
         if (response.data["Updation"] === true)
-          message.success("Successfully added to cart");
+          message.success("Product successfully added to cart");
         else message.error("Error in Cart Updation");
       })
       .catch((error) => {
@@ -249,7 +249,12 @@ class Home extends Component {
               >
                 <h1>{item.title}</h1>
                 <div
-                  style={{ flexDirection: "row", flex: 1, flexWrap: "wrap" }}
+                  style={{
+                    display: "inline",
+                    flexDirection: "row",
+                    flex: 1,
+                    flexWrap: "wrap",
+                  }}
                 >
                   <h3
                     style={{
@@ -257,10 +262,10 @@ class Home extends Component {
                       color: "red",
                     }}
                   >
-                    &#8377;{item.retail_price}
+                    Retail Price: &#8377;{item.retail_price}
                   </h3>
                   <h2 style={{ textDecorationStyle: "solid" }}>
-                    &#8377;{item.discount_price}
+                    Discount Price: &#8377;{item.discount_price}
                   </h2>
                 </div>
               </Card>
