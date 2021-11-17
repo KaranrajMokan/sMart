@@ -44,7 +44,7 @@ def make_app():
 
 if __name__ == "__main__":
     app = make_app()
-    app.listen(8082)
-    print("Transaction Service is listening on port: 8082")
+    app.listen(8084)
+    print("Transaction Service is listening on port: 8084")
     tornado.ioloop.IOLoop.current().start()   
     

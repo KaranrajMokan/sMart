@@ -3,12 +3,11 @@ import { Row, Col, Select, Card, Modal, InputNumber, message } from "antd";
 import axios from "axios";
 
 const { Option } = Select;
-let items = [];
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      productsData: [],
       modalVisibility: false,
       modalData: {},
       quantity: 1,
@@ -20,7 +19,42 @@ class Home extends Component {
   }
 
   handleCategoryChange(value) {
-    console.log(value);
+    axios
+      .request({
+        method: "get",
+        url: "http://localhost:8082/app/recommender",
+        params: {
+          categories: value.toString(),
+        },
+      })
+      .then((response) => {
+        if (response.data !== "") {
+          let items = [];
+          for (let i = 0; i < response.data["productsList"].length; i++) {
+            let tempsrc = response.data["productsList"][i]["image_url"];
+            let temp = {
+              alt: response.data["productsList"][i]["product_name"],
+              src: tempsrc[0],
+              title: response.data["productsList"][i]["product_name"],
+              description: response.data["productsList"][i]["description"],
+              discount_price:
+                response.data["productsList"][i]["discount_price"],
+              retail_price: response.data["productsList"][i]["retail_price"],
+              rating: response.data["productsList"][i]["product_rating"],
+            };
+            items.push(temp);
+          }
+          this.setState({
+            productsData: items,
+          });
+          console.log(this.state.productsData);
+        } else {
+          this.componentDidMount();
+        }
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
   }
 
   handleClick(item) {
@@ -73,32 +107,31 @@ class Home extends Component {
         url: "http://localhost:8081/app/random",
       })
       .then((response) => {
+        let items = [];
         for (let i = 0; i < response.data["productsList"].length; i++) {
-          let tempsrc = response.data["productsList"][i]["image"].split(",");
+          let tempsrc = response.data["productsList"][i]["image_url"];
           let temp = {
             alt: response.data["productsList"][i]["product_name"],
             src: tempsrc[0],
             title: response.data["productsList"][i]["product_name"],
             description: response.data["productsList"][i]["description"],
-            discount_price:
-              response.data["productsList"][i]["discounted_price"],
+            discount_price: response.data["productsList"][i]["discount_price"],
             retail_price: response.data["productsList"][i]["retail_price"],
             rating: response.data["productsList"][i]["product_rating"],
           };
           items.push(temp);
         }
         this.setState({
-          data: items,
+          productsData: items,
         });
       })
       .catch((error) => {
-        console.log(error.response);
+        console.log(error);
       });
   }
 
   categories = [
     "Action Figures",
-    "Appliance Covers",
     "Aprons",
     "Backpacks",
     "Badminton",
@@ -206,7 +239,7 @@ class Home extends Component {
           style={{ paddingLeft: "100px", paddingTop: "70px" }}
           gutter={[24, 24]}
         >
-          {this.state.data.map((item) => (
+          {this.state.productsData.map((item) => (
             <Col span={8}>
               <Card
                 hoverable

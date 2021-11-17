@@ -25,7 +25,7 @@ class RandomItems(tornado.web.RequestHandler):
         db_results = self.products.aggregate([{ "$sample": { "size": 50 } }])
         productsList = list(db_results)
         print("Fetched",len(productsList),"products")
-        self.finish({"productsList" : json.loads(json_util.dumps(productsList))})
+        self.finish({"productsList" : list(json.loads(json_util.dumps(productsList)))})
         
     def post(self):
         self.write("...post")

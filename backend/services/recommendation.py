@@ -22,16 +22,22 @@ class Recommender(tornado.web.RequestHandler):
         self.products = db['products']
     
     def get(self):
-        categories = tornado.escape.json_decode(self.request.body)
-        print(categories)
-        db_results = self.products.find().limit(100)
-        recommendations=[]
-        for i in db_results:
-            cat = i['product_category_tree'].split(" , ")
-            if any(i in cat for i in categories):
+        categories = self.get_argument('categories')
+        if categories != "":
+            categories = categories.split(",")
+            if len(categories) == 1:
+                db_results = self.products.find({ "product_categories" : categories[0]})
+            else:
+                db_results = self.products.find({"product_categories" : {
+                    "$in" : categories}})
+            
+            recommendations=[]
+            for i in db_results:
                 recommendations.append(i)
-        self.finish({"productsList" : json.loads(json_util.dumps(recommendations))})
-        
+            print("Fetched",len(recommendations),"products for",",".join(categories))
+            self.finish({"productsList" : json.loads(json_util.dumps(recommendations))})
+            
+            
     def post(self):
         self.write("...post")
 
@@ -41,6 +47,6 @@ def make_app():
 
 if __name__ == "__main__":
     app = make_app()
-    app.listen(8084)
-    print("Recommendation Service is listening on port: 8084")
+    app.listen(8082)
+    print("Recommendation Service is listening on port: 8082")
     tornado.ioloop.IOLoop.current().start()
